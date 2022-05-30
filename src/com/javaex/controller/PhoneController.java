@@ -14,7 +14,7 @@ import com.javaex.dao.PhoneDao;
 import com.javaex.vo.PersonVo;
 
 
-@WebServlet("/pbc")
+@WebServlet("/pbc") //컨트롤러의 주소 경로 이름
 public class PhoneController extends HttpServlet {
 	//필드
 	private static final long serialVersionUID = 1L;
@@ -30,18 +30,19 @@ public class PhoneController extends HttpServlet {
 		//코드
 		request.setCharacterEncoding("UTF-8");
 		
+		PhoneDao pDao = new PhoneDao();
+		
 		String action = request.getParameter("action");
 		
 		if("list".equals(action)) {
 			//데이터 가져오기
-			PhoneDao pDao = new PhoneDao();
 			List<PersonVo> pList = pDao.personSelect();
 			System.out.println(pList);
 			
-			//request에 데이터 추가
+			//request를 통해서 전달할 데이터 추가
 			request.setAttribute("pList", pList);
 			
-			//데이터 + html --> jsp시킨다
+			//jsp 부를때 쓰는 코드
 			RequestDispatcher rd = request.getRequestDispatcher("/list.jsp");
 			rd.forward(request, response);
 		}
@@ -60,7 +61,6 @@ public class PhoneController extends HttpServlet {
 			System.out.println(pVo);
 			
 			//phoneDao.personInsert()
-			PhoneDao pDao = new PhoneDao();
 			pDao.personInsert(pVo);
 			
 			//redirect
@@ -69,7 +69,6 @@ public class PhoneController extends HttpServlet {
 		}
 		else if("updateForm".equals(action)) {
 			int id = Integer.parseInt(request.getParameter("id"));
-			PhoneDao pDao = new PhoneDao();
 			PersonVo pVo = pDao.getPerson(id);
 			
 			request.setAttribute("pVo", pVo);
@@ -86,14 +85,12 @@ public class PhoneController extends HttpServlet {
 			PersonVo pVo = new PersonVo(id, name, hp, company);
 			System.out.println(pVo);
 			
-			PhoneDao pDao = new PhoneDao();
 			pDao.personUpdate(pVo);
 			
 			response.sendRedirect("./pbc?action=list");
 		}
 		else if("delete".equals(action)) {
 			int id = Integer.parseInt(request.getParameter("id"));
-			PhoneDao pDao = new PhoneDao();
 			pDao.personDelete(id);
 			
 			response.sendRedirect("/phonebook2/pbc?action=list");
