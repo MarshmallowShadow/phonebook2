@@ -11,7 +11,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Insert title here</title>
+		<title>연락처</title>
 	</head>
 	<body>
 		<h1>전화번호부</h1>
