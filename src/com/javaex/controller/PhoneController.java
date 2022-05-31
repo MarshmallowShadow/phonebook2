@@ -2,7 +2,6 @@ package com.javaex.controller;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import com.javaex.dao.PhoneDao;
 import com.javaex.vo.PersonVo;
+import com.javaex.util.WebUtil;
 
 
 @WebServlet("/pbc") //컨트롤러의 주소 경로 이름
@@ -31,6 +31,7 @@ public class PhoneController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		PhoneDao pDao = new PhoneDao();
+		WebUtil webUtil = new WebUtil();
 		
 		String action = request.getParameter("action");
 		
@@ -43,12 +44,10 @@ public class PhoneController extends HttpServlet {
 			request.setAttribute("pList", pList);
 			
 			//jsp 부를때 쓰는 코드
-			RequestDispatcher rd = request.getRequestDispatcher("/list.jsp");
-			rd.forward(request, response);
+			webUtil.forward(request, response, "WEB-INF/list.jsp");
 		}
 		else if("writeForm".equals(action)) {
-			RequestDispatcher rd = request.getRequestDispatcher("/writeForm.jsp");
-			rd.forward(request, response);
+			webUtil.forward(request, response, "WEB-INF/writeForm.jsp");
 		}
 		else if("insert".equals(action)) {
 			//파라미터에서 값 꺼내기(name, hp, company)
@@ -64,7 +63,7 @@ public class PhoneController extends HttpServlet {
 			pDao.personInsert(pVo);
 			
 			//redirect
-			response.sendRedirect("./pbc?action=list");
+			webUtil.redirect(request, response, "./pbc?action=list");
 			
 		}
 		else if("updateForm".equals(action)) {
@@ -73,8 +72,7 @@ public class PhoneController extends HttpServlet {
 			
 			request.setAttribute("pVo", pVo);
 			
-			RequestDispatcher rd = request.getRequestDispatcher("/updateForm.jsp");
-			rd.forward(request, response);
+			webUtil.forward(request, response, "WEB-INF/updateForm.jsp");
 		}
 		else if("update".equals(action)) {
 			int id = Integer.parseInt(request.getParameter("id"));
@@ -87,13 +85,13 @@ public class PhoneController extends HttpServlet {
 			
 			pDao.personUpdate(pVo);
 			
-			response.sendRedirect("./pbc?action=list");
+			webUtil.redirect(request, response, "./pbc?action=list");
 		}
 		else if("delete".equals(action)) {
 			int id = Integer.parseInt(request.getParameter("id"));
 			pDao.personDelete(id);
 			
-			response.sendRedirect("/phonebook2/pbc?action=list");
+			webUtil.redirect(request, response, "./pbc?action=list");
 		}
 		else {
 			System.out.println("action 파라미터 없음");
