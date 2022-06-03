@@ -31,7 +31,6 @@ public class PhoneController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		PhoneDao pDao = new PhoneDao();
-		WebUtil webUtil = new WebUtil();
 		
 		String action = request.getParameter("action");
 		
@@ -44,10 +43,10 @@ public class PhoneController extends HttpServlet {
 			request.setAttribute("pList", pList);
 			
 			//jsp 부를때 쓰는 코드
-			webUtil.forward(request, response, "WEB-INF/list.jsp");
+			WebUtil.forward(request, response, "WEB-INF/list.jsp");
 		}
 		else if("writeForm".equals(action)) {
-			webUtil.forward(request, response, "WEB-INF/writeForm.jsp");
+			WebUtil.forward(request, response, "WEB-INF/writeForm.jsp");
 		}
 		else if("insert".equals(action)) {
 			//파라미터에서 값 꺼내기(name, hp, company)
@@ -63,7 +62,7 @@ public class PhoneController extends HttpServlet {
 			pDao.personInsert(pVo);
 			
 			//redirect
-			webUtil.redirect(request, response, "./pbc?action=list");
+			WebUtil.redirect(request, response, "./pbc?action=list");
 			
 		}
 		else if("updateForm".equals(action)) {
@@ -72,7 +71,7 @@ public class PhoneController extends HttpServlet {
 			
 			request.setAttribute("pVo", pVo);
 			
-			webUtil.forward(request, response, "WEB-INF/updateForm.jsp");
+			WebUtil.forward(request, response, "WEB-INF/updateForm.jsp");
 		}
 		else if("update".equals(action)) {
 			int id = Integer.parseInt(request.getParameter("id"));
@@ -85,13 +84,13 @@ public class PhoneController extends HttpServlet {
 			
 			pDao.personUpdate(pVo);
 			
-			webUtil.redirect(request, response, "./pbc?action=list");
+			WebUtil.redirect(request, response, "./pbc?action=list");
 		}
 		else if("delete".equals(action)) {
 			int id = Integer.parseInt(request.getParameter("id"));
 			pDao.personDelete(id);
 			
-			webUtil.redirect(request, response, "./pbc?action=list");
+			WebUtil.redirect(request, response, "./pbc?action=list");
 		}
 		else {
 			System.out.println("action 파라미터 없음");
