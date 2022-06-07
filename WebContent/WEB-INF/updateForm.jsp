@@ -1,11 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.javaex.dao.PhoneDao" %>
-<%@ page import="com.javaex.vo.PersonVo"  %>
-<%@ page import="java.util.List" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%
-	PersonVo pVo =(PersonVo)request.getAttribute("pVo");
-%>
 
 <!DOCTYPE html>
 
@@ -20,12 +15,12 @@
 		<form action="./pbc" method="post">
 			<input type="hidden" name="action" value="update">
 			<label for="name">이름(name)</label>
-			<input type="text" id="name" name="name" value="<%=pVo.getName() %>"><br>
+			<input type="text" id="name" name="name" value="${pVo.name }"><br>
 			<label for="hp">휴대전화(hp)</label>
-			<input type="text" id="hp" name="hp" value="<%=pVo.getHp() %>"><br>
+			<input type="text" id="hp" name="hp" value="${pVo.hp }"><br>
 			<label for="company">회사번호(company):</label>
-			<input type="text" id="company" name="company" value="<%=pVo.getCompany() %>"><br>
-			<input type="hidden" name="id" value="<%=pVo.getPersonId() %>">
+			<input type="text" id="company" name="company" value="${pVo.company }"><br>
+			<input type="hidden" name="id" value="${pVo.personId }">
 			<button type="submit">저장</button>
 		</form>
 	</body>
